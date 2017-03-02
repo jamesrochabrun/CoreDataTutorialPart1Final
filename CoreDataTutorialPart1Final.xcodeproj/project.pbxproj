@@ -13,6 +13,9 @@
 		7BD171451E6782130012FF66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BD171431E6782130012FF66 /* LaunchScreen.storyboard */; };
 		7BD171501E6782750012FF66 /* PhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD1714F1E6782750012FF66 /* PhotoVC.swift */; };
 		7BD171521E6782800012FF66 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171511E6782800012FF66 /* PhotoCell.swift */; };
+		7BD171551E6792420012FF66 /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171531E6792420012FF66 /* Photo+CoreDataClass.swift */; };
+		7BD171561E6792420012FF66 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171541E6792420012FF66 /* Photo+CoreDataProperties.swift */; };
+		7BD171581E679CE80012FF66 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171571E679CE80012FF66 /* CoreDataStack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		7BD171461E6782130012FF66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7BD1714F1E6782750012FF66 /* PhotoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoVC.swift; sourceTree = "<group>"; };
 		7BD171511E6782800012FF66 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		7BD171531E6792420012FF66 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		7BD171541E6792420012FF66 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		7BD171571E679CE80012FF66 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,9 @@
 		7BD1714C1E6782500012FF66 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7BD171531E6792420012FF66 /* Photo+CoreDataClass.swift */,
+				7BD171541E6792420012FF66 /* Photo+CoreDataProperties.swift */,
+				7BD171571E679CE80012FF66 /* CoreDataStack.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -163,6 +172,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BD171581E679CE80012FF66 /* CoreDataStack.swift in Sources */,
+				7BD171561E6792420012FF66 /* Photo+CoreDataProperties.swift in Sources */,
+				7BD171551E6792420012FF66 /* Photo+CoreDataClass.swift in Sources */,
 				7BD171521E6782800012FF66 /* PhotoCell.swift in Sources */,
 				7BD171381E6782130012FF66 /* AppDelegate.swift in Sources */,
 				7BD171401E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld in Sources */,
