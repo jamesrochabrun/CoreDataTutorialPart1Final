@@ -12,47 +12,84 @@ import CoreData
 class PhotoVC: UITableViewController {
     
     private let cellID = "cellID"
+    //MARK:// WITH FETCH REQUEST CONTROLLER
+    lazy var fetcedhResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Photo.self))
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "author", ascending: true)]
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.sharedInstance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
     
     //1 create photo array
-    var photoArray: [Photo]?
+    //var photoArray: [Photo]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Photos Feed"
+
+        do {
+            try self.fetcedhResultController.performFetch()
+            print("COUNT FETCHED FIRST: \(self.fetcedhResultController.sections?[0].numberOfObjects)")
+        } catch let error  {
+            print("ERROR: \(error)")
+        }
+        
         view.backgroundColor = .white
         tableView.register(PhotoCell.self, forCellReuseIdentifier: cellID)
-
-//        clearData()
-//        getDataFromAPI { (photos) in
-//            self.photoArray = photos
-//            self.tableView.reloadData()
-//        }
-        
-        //good starting point check it with new uncoupled methods
+     //clearData()
+        test()
+    }
+    
+    func test() {
+        let apiService = APIService()
+            apiService.getDataWith(success: { (jsonArray) in
+           // self.clearData()
+            self.saveInCoreDataWith(array: jsonArray)
+//
+//            do {
+//                try self.fetcedhResultController.performFetch()
+//                print("COUNT RESULT CONTROLLER SUCCESS: \(self.fetcedhResultController.sections?[0].numberOfObjects)")
+//                //self.tableView.reloadData()
+//            } catch let error  {
+//                print("ERROR: \(error)")
+//            }
+        }, failure: { () in
+            do {
+                try self.fetcedhResultController.performFetch()
+                print("COUNT RESULT CONTROLLER FAILURE: \(self.fetcedhResultController.sections?[0].numberOfObjects)")
+            } catch let error  {
+                print("ERROR: \(error)")
+            }
+        })
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! PhotoCell
         
-        if let photo = photoArray?[indexPath.row]  {
+        if let photo = fetcedhResultController.object(at: indexPath) as? Photo {
             cell.setPhotoCellWith(photo: photo)
         }
+
         return cell
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = photoArray?.count {
+
+        if let count = fetcedhResultController.sections?.first?.numberOfObjects {
             return count
         }
         return 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return view.frame.width + 80
+        return view.frame.width + 90 //90 = sum of labels height
     }
+
     
-    //CREATE
-    func createPhotoEntityFrom(dictionary: [String: AnyObject]) -> NSManagedObject? {
+    //MARK: // WITHOUT FETCH REQUEST CONTROLLER
+    
+    private func createPhotoEntityFrom(dictionary: [String: AnyObject]) -> NSManagedObject? {
         
         let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
         if let photoEntity = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: context) as? Photo {
@@ -66,27 +103,27 @@ class PhotoVC: UITableViewController {
     }
     
     //SAVE
-    func saveInCoreDataWith(array: [[String: AnyObject]]) {
+    private func saveInCoreDataWith(array: [[String: AnyObject]]) {
         _ = array.map{self.createPhotoEntityFrom(dictionary: $0)}
         CoreDataStack.sharedInstance.saveContext()
     }
     
-    //FETCH
-    func fetchdataFromCoredata() -> [Photo]? {
-        
-        let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-        do {
-            let photoArray = try context.fetch(fetchRequest) as? [Photo]
-            return photoArray
-        } catch let error {
-            print("ERROR FETHCING FROM CONTEXT : \(error)")
-        }
-        return nil
-    }
+    //FETCH unused
+//    func fetchdataFromCoredata() -> [Photo]? {
+//        
+//        let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+//        do {
+//            let photoArray = try context.fetch(fetchRequest) as? [Photo]
+//            return photoArray
+//        } catch let error {
+//            print("ERROR FETHCING FROM CONTEXT : \(error)")
+//        }
+//        return nil
+//    }
     
     //DELETE
-    func clearData() {
+    private func clearData() {
         do {
             
             let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
@@ -103,41 +140,35 @@ class PhotoVC: UITableViewController {
 }
 
 
-extension PhotoVC {
-    
-    func getDataFromAPI(completion: @escaping ([[String: AnyObject]]) -> ()) {
+extension PhotoVC: NSFetchedResultsControllerDelegate {
+
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        let urlString = "https://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=soccer&nojsoncallback=1#"
-        
-        guard let url = URL(string: urlString) else {
-            print("ERROR IN URL STRUCTURE")
-            return
+        if type == .insert {
+            
+            DispatchQueue.main.async {
+                print("INDEX \(indexPath), NEW INDEX: \(newIndexPath)")
+
+                self.tableView.insertRows(at: [newIndexPath!], with: .fade)
+
+            }
         }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print("ERROR FETCHING JSON: ", error ?? "error")
-                return
-            }
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data!, options: [.mutableContainers]) as? [String: AnyObject] {
-                    guard let itemJsonArray = json["items"] as? [[String: AnyObject]] else {
-                        print("ERROR IN JSON STRUCTURE FROM THE SERVER")
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        completion(itemJsonArray)
-                    }
-                }
-            } catch let error {
-                print("SERIALIZATION ERROR PROBABLY DATA STRUCTURE FROM SERVER:" , error)
-            }
-            }.resume()
     }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("end updates")
+
+            self.tableView.endUpdates()
+    }
+    
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+        print("begin updates")
+    }
+
 }
-
-
-
-
 
 
 

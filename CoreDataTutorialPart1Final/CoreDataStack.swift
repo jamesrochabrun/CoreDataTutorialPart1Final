@@ -58,7 +58,6 @@ class CoreDataStack: NSObject {
             }
         }
     }
-    
 }
 
 
@@ -67,7 +66,7 @@ extension CoreDataStack {
     
     func applicationDocumentsDirectory() {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "yo.BlogReaderApp" in the application's documents directory.
-        if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last {
+        if let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last {
             print(url.absoluteString)
         }
     }

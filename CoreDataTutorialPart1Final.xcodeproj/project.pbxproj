@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B09F2421E68C8F700C8774B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B09F2411E68C8F700C8774B /* APIService.swift */; };
 		7BD171381E6782130012FF66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171371E6782130012FF66 /* AppDelegate.swift */; };
 		7BD171401E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BD1713E1E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld */; };
 		7BD171421E6782130012FF66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD171411E6782130012FF66 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B09F2411E68C8F700C8774B /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		7BD171341E6782130012FF66 /* CoreDataTutorialPart1Final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataTutorialPart1Final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BD171371E6782130012FF66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BD1713F1E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataTutorialPart1Final.xcdatamodel; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		7BD171361E6782130012FF66 /* CoreDataTutorialPart1Final */ = {
 			isa = PBXGroup;
 			children = (
+				7B09F2411E68C8F700C8774B /* APIService.swift */,
 				7BD171371E6782130012FF66 /* AppDelegate.swift */,
 				7BD1714C1E6782500012FF66 /* Model */,
 				7BD1714D1E67825B0012FF66 /* View */,
@@ -178,6 +181,7 @@
 				7BD171521E6782800012FF66 /* PhotoCell.swift in Sources */,
 				7BD171381E6782130012FF66 /* AppDelegate.swift in Sources */,
 				7BD171401E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld in Sources */,
+				7B09F2421E68C8F700C8774B /* APIService.swift in Sources */,
 				7BD171501E6782750012FF66 /* PhotoVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,6 +336,7 @@
 				7BD1714B1E6782130012FF66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
