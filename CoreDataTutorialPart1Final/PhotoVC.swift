@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+
+
 class PhotoVC: UITableViewController {
     
     private let cellID = "cellID"
@@ -37,31 +39,36 @@ class PhotoVC: UITableViewController {
         
         view.backgroundColor = .white
         tableView.register(PhotoCell.self, forCellReuseIdentifier: cellID)
-     //clearData()
-        test()
+    // clearData()
+    test()
     }
     
     func test() {
+        
         let apiService = APIService()
-            apiService.getDataWith(success: { (jsonArray) in
-           // self.clearData()
-            self.saveInCoreDataWith(array: jsonArray)
-//
-//            do {
-//                try self.fetcedhResultController.performFetch()
-//                print("COUNT RESULT CONTROLLER SUCCESS: \(self.fetcedhResultController.sections?[0].numberOfObjects)")
-//                //self.tableView.reloadData()
-//            } catch let error  {
-//                print("ERROR: \(error)")
-//            }
-        }, failure: { () in
-            do {
-                try self.fetcedhResultController.performFetch()
-                print("COUNT RESULT CONTROLLER FAILURE: \(self.fetcedhResultController.sections?[0].numberOfObjects)")
-            } catch let error  {
-                print("ERROR: \(error)")
+        apiService.getDataWith { (result) in
+            switch result {
+            case .Success(let data):
+                self.clearData()
+                self.saveInCoreDataWith(array: data)
+            case .Error(let message):
+                print("Error: \(message)")
+                
+                DispatchQueue.main.async {
+                   self.showAlertWith(title: "Error", message: message)
+                }
             }
-        })
+        }
+    }
+    
+    func showAlertWith(title: String, message: String, style: UIAlertControllerStyle = .alert) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
+        let action = UIAlertAction(title: title, style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -83,7 +90,7 @@ class PhotoVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return view.frame.width + 90 //90 = sum of labels height
+        return view.frame.width + 100 //100 = sum of labels height + height of divider line
     }
 
     
@@ -105,7 +112,11 @@ class PhotoVC: UITableViewController {
     //SAVE
     private func saveInCoreDataWith(array: [[String: AnyObject]]) {
         _ = array.map{self.createPhotoEntityFrom(dictionary: $0)}
-        CoreDataStack.sharedInstance.saveContext()
+        do {
+            try CoreDataStack.sharedInstance.persistentContainer.viewContext.save()
+        } catch let error {
+            print(error)
+        }
     }
     
     //FETCH unused
@@ -145,21 +156,26 @@ extension PhotoVC: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        if type == .insert {
-            
-            DispatchQueue.main.async {
-                print("INDEX \(indexPath), NEW INDEX: \(newIndexPath)")
-
-                self.tableView.insertRows(at: [newIndexPath!], with: .fade)
-
-            }
+//        if type == .insert {
+//            
+//            DispatchQueue.main.async {
+//                print("INDEX \(indexPath), NEW INDEX: \(newIndexPath)")
+//            }
+//        } else if == .dele
+        
+        switch type {
+        case .insert:
+            self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+        default:
+            break
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         print("end updates")
-
-            self.tableView.endUpdates()
+        self.tableView.endUpdates()
     }
     
     

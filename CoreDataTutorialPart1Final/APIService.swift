@@ -11,49 +11,45 @@ import UIKit
 
 class APIService: NSObject {
     
-    let query = "apps"
+    let query = "dogs"
     lazy var endPoint: String = {
         return "https://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=\(self.query)&nojsoncallback=1#"
     }()
-    
-    func getDataWith(success: @escaping ((_ jsonArray:[[String: AnyObject]]) -> Void), failure: @escaping (() -> Void)) {
+
+    func getDataWith(completion: @escaping (Result<[[String: AnyObject]]>) -> Void) {
         
         let urlString = endPoint
         
-        guard let url = URL(string: urlString) else {
-            print("ERROR IN URL STRUCTURE")
-            return
-        }
+        guard let url = URL(string: urlString) else { return completion(.Error("Invalid URL, we can't update your feed")) }
+
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            if error != nil {
-                print("ERROR FETCHING JSON: ", error ?? "error")
-                DispatchQueue.main.async {
-                    failure()
-                }
-                return
-            }
+         guard error == nil else { return completion(.Error(error!.localizedDescription)) }
+            guard let data = data else { return completion(.Error(error?.localizedDescription ?? "There are no new Items to show"))
+}
+
             do {
-                if let json = try JSONSerialization.jsonObject(with: data!, options: [.mutableContainers]) as? [String: AnyObject] {
+                if let json = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers]) as? [String: AnyObject] {
                     guard let itemsJsonArray = json["items"] as? [[String: AnyObject]] else {
-                        print("ERROR IN JSON STRUCTURE FROM THE SERVER")
-                        return
+                        return completion(.Error(error?.localizedDescription ?? "There are no new Items to show"))
                     }
                     DispatchQueue.main.async {
-                        success(itemsJsonArray)
+                        completion(.Success(itemsJsonArray))
                     }
                 }
             } catch let error {
-                print("SERIALIZATION ERROR PROBABLY DATA STRUCTURE FROM SERVER:" , error)
+                return completion(.Error(error.localizedDescription))
             }
             }.resume()
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
+
+enum Result<T> {
+    case Success(T)
+    case Error(String)
+}
+
+
+
+
+

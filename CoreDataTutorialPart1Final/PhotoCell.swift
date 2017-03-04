@@ -78,7 +78,7 @@ class PhotoCell: UITableViewCell {
         dividerLineView.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
         dividerLineView.topAnchor.constraint(equalTo: authorLabel.bottomAnchor).isActive = true
         
-        tagsLabel.heightAnchor.constraint(equalToConstant: 59).isActive = true
+        tagsLabel.heightAnchor.constraint(equalToConstant: 69).isActive = true
         tagsLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -14).isActive = true
         tagsLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 14).isActive = true
         tagsLabel.topAnchor.constraint(equalTo: dividerLineView.bottomAnchor).isActive = true
@@ -143,8 +143,6 @@ extension UIImageView {
         if let url = URL(string: URLString) {
             URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                 
-              //  print("RESPONSE FROM API: \(response)")
-
                 if error != nil {
                     print("ERROR LOADING IMAGES FROM URL: \(error)")
                     return
