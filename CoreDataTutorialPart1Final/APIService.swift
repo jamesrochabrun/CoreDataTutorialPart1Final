@@ -27,7 +27,6 @@ class APIService: NSObject {
          guard error == nil else { return completion(.Error(error!.localizedDescription)) }
             guard let data = data else { return completion(.Error(error?.localizedDescription ?? "There are no new Items to show"))
 }
-
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers]) as? [String: AnyObject] {
                     guard let itemsJsonArray = json["items"] as? [[String: AnyObject]] else {

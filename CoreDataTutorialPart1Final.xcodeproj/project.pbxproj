@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7B09F2421E68C8F700C8774B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B09F2411E68C8F700C8774B /* APIService.swift */; };
+		7B4DA3571E6B9DB4008CFF8A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4DA3561E6B9DB4008CFF8A /* Extensions.swift */; };
 		7BD171381E6782130012FF66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD171371E6782130012FF66 /* AppDelegate.swift */; };
 		7BD171401E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7BD1713E1E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodeld */; };
 		7BD171421E6782130012FF66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BD171411E6782130012FF66 /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		7B09F2411E68C8F700C8774B /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		7B4DA3561E6B9DB4008CFF8A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7BD171341E6782130012FF66 /* CoreDataTutorialPart1Final.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataTutorialPart1Final.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BD171371E6782130012FF66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BD1713F1E6782130012FF66 /* CoreDataTutorialPart1Final.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataTutorialPart1Final.xcdatamodel; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 			children = (
 				7B09F2411E68C8F700C8774B /* APIService.swift */,
 				7BD171371E6782130012FF66 /* AppDelegate.swift */,
+				7B4DA3561E6B9DB4008CFF8A /* Extensions.swift */,
 				7BD1714C1E6782500012FF66 /* Model */,
 				7BD1714D1E67825B0012FF66 /* View */,
 				7BD1714E1E6782620012FF66 /* Controller */,
@@ -176,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7BD171581E679CE80012FF66 /* CoreDataStack.swift in Sources */,
+				7B4DA3571E6B9DB4008CFF8A /* Extensions.swift in Sources */,
 				7BD171561E6792420012FF66 /* Photo+CoreDataProperties.swift in Sources */,
 				7BD171551E6792420012FF66 /* Photo+CoreDataClass.swift in Sources */,
 				7BD171521E6782800012FF66 /* PhotoCell.swift in Sources */,

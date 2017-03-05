@@ -95,83 +95,10 @@ class PhotoCell: UITableViewCell {
             self.authorLabel.text = photo.author
             self.tagsLabel.text = photo.tags
             if let url = photo.mediaURL {
-                self.photoImageview.loadImageUsingCacheWithURLString(url, placeHolder: #imageLiteral(resourceName: "placeholder"))
+                self.photoImageview.loadImageUsingCacheWithURLString(url, placeHolder: UIImage(named: "placeholder"))
             }
         }
     }
 }
-
-
-
-let imageCache = NSCache<NSString, UIImage>()
-
-extension UIImageView {
-    
-    func loadImageUsingCacheWithURLString(_ URLString: String, placeHolder: UIImage) {
-        
-        self.image = nil
-        if let cachedImage = imageCache.object(forKey: NSString(string: URLString)) {
-            self.image = cachedImage
-            return
-        }
-        
-        if let url = URL(string: URLString) {
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                
-                //print("RESPONSE FROM API: \(response)")
-                if error != nil {
-                    print("ERROR LOADING IMAGES FROM URL: \(error)")
-                    DispatchQueue.main.async {
-                        self.image = placeHolder
-                    }
-                    return
-                }
-                DispatchQueue.main.async {
-                    if let data = data {
-                        if let downloadedImage = UIImage(data: data) {
-                            imageCache.setObject(downloadedImage, forKey: NSString(string: URLString))
-                            self.image = downloadedImage
-                        }
-                    }
-                }
-            }).resume()
-        }
-    }
-    
-    func loadImage(_ URLString: String) {
-        
-        if let url = URL(string: URLString) {
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                
-                if error != nil {
-                    print("ERROR LOADING IMAGES FROM URL: \(error)")
-                    return
-                }
-                DispatchQueue.main.async {
-                    if let data = data {
-                        if let downloadedImage = UIImage(data: data) {
-                            self.image = downloadedImage
-                        }
-                    }
-                }
-            }).resume()
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
