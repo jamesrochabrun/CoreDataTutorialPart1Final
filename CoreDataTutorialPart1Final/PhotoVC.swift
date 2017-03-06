@@ -28,7 +28,11 @@ class PhotoVC: UITableViewController {
         self.title = "Photos Feed"
         view.backgroundColor = .white
         tableView.register(PhotoCell.self, forCellReuseIdentifier: cellID)
-        
+        updateTableContent()
+    }
+    
+    func updateTableContent() {
+
         do {
             try self.fetchedhResultController.performFetch()
             print("COUNT FETCHED FIRST: \(self.fetchedhResultController.sections?[0].numberOfObjects)")
@@ -42,7 +46,6 @@ class PhotoVC: UITableViewController {
             case .Success(let data):
                 self.clearData()
                 self.saveInCoreDataWith(array: data)
-            //print(data)
             case .Error(let message):
                 DispatchQueue.main.async {
                     self.showAlertWith(title: "Error", message: message)
