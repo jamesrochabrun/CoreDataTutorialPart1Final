@@ -35,7 +35,7 @@ class PhotoVC: UITableViewController {
 
         do {
             try self.fetchedhResultController.performFetch()
-            print("COUNT FETCHED FIRST: \(self.fetchedhResultController.sections?[0].numberOfObjects)")
+            print("COUNT FETCHED FIRST: \(String(describing: self.fetchedhResultController.sections?[0].numberOfObjects))")
         } catch let error  {
             print("ERROR: \(error)")
         }
@@ -54,7 +54,7 @@ class PhotoVC: UITableViewController {
         }
     }
     
-    func showAlertWith(title: String, message: String, style: UIAlertControllerStyle = .alert) {
+    func showAlertWith(title: String, message: String, style: UIAlertController.Style = .alert) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
         let action = UIAlertAction(title: title, style: .default) { (action) in
